@@ -1,0 +1,22 @@
+{% load floppyforms %}
+<legend>Vos droits universitaires s'élèvent à : {{ object.wish.droit_univ|floatformat:2 }} euros. <br>
+            {% if object.wish.tarif_secu %} <legend>La sécurité sociale s'élève à  :
+             {{ object.wish.tarif_secu }} euros.</legend>{%endif%}
+                 </legend>
+<div class="alert alert-info">
+    <p>
+    Vous pouvez opter pour le paiement par virement ou par chèque. (c'est le même mode de paiement qui sera utilisé pour les frais pédagogiques)<br/>
+
+Afin de mieux faciliter le traitement de votre dossier de paiement <strong>nous vous conseillons fortement d'opter pour le paiement par virement bancaire.</strong><br/> Toutefois ce conseil ne s'applique pas aux virements étrangers. <br/>
+
+
+Au cas où vous vous réinscrivez et en cas de paiement par virement bancaire vous voudrez bien prendre garde à demander le versement à votre banque sur le nouveau rib de l'IED.<br/>
+
+            </p>
+            </div>
+<div class="alert alert-danger">
+    <strong>Attention :</strong><br>
+    Ne confondez pas virement et prélèvement. Les prélèvements ne sont pas acceptés.
+</div>
+{% formrow form.moyen_paiement using 'floppyforms/rows/default.html'%}
+

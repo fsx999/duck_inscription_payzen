@@ -1,0 +1,13 @@
+{% load floppyforms %}
+<legend>Vos frais pédagogiques s'élèvent  à : <span id="tarif">{{ object.wish.frais_peda|floatformat:-2 }}</span> euros.</legend>
+
+
+<div id="info-paiement" class="alert alert-info">
+            Vous avez choisi de payer par <strong>{{ object.moyen_paiement|lower }}</strong>. <br>
+    Vous devez choisir en combien de fois vous voulez payer les frais pédagogiques. Les droits universitaires se payent en une fois.
+</div>
+{% formrow form.nb_paiement_frais %}
+
+
+
+

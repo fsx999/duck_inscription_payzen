@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load floppyforms lib_inscription %}
+{% block content %}
+    <div class="panel panel-default">
+          <div class="panel-body bg-danger">
+
+            Le paiement par carte bleu n'a pas pu s'effectué.
+            Que voulez vous faire ?
+          </div>
+    </div>
+    <div class="clearfix center-block"><a href="?action=droit_univ" class="btn btn-default">Choisir un autre type de paiement</a>
+    <a href="?action=paiement" class="btn btn-default">Recommencer</a>
+    <a href="{% url "accueil" wish.individu.pk  %}" class="btn btn-default">Revenir à l'accueil</a></div>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load floppyforms lib_inscription %}
+{% block content %}
+{#{{ form.media }}#}
+<h3>
+    Veuillez remplir soigneusement les formulaires suivants :
+</h3>
+
+
+<form id="form" class=" form-horizontal well" method="post" novalidate="novalidate">{% csrf_token %}
+
+    <div class="page-header">
+        <h4 class="text-center">{% block titre_form %}{{ form.instance.title }}{% endblock %}</h4>
+    </div>
+
+    <div class="well">
+        <h4><strong>Vos informations de paiement</strong></h4>
+        <div class="control-group">
+            <label class="control-label" for="">Votre moyen de paiement :</label>
+
+            <div class="controls"><label class=" btn">{{ object.moyen_paiement}}</label></div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="">Droits universitaires {% if object.wish.tarif_secu %}
+                et sécurité sociale {% endif %}:</label>
+
+            <div class="controls"><label class=" btn">{{ object.wish.droit_total|floatformat:-2}} euros</label></div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="">Frais pédagogiques :</label>
+
+            <div class="controls"><label class=" btn">{{ object.wish.frais_peda|floatformat:-2 }} euros</label></div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="">Vous payez en :</label>
+
+            <div class="controls"><label class=" btn">{{ object.nb_paiement_frais}} fois les frais pédagogiques</label></div>
+        </div>
+    {% if object.demi_annee %}
+        <div class="control-group">
+            <label class="control-label" for="">Inscription à un semestre :</label>
+
+            <div class="controls"><label class=" btn">{{ object.demi_annee|yesno:"Oui, Non" }}</label></div>
+        </div>
+    {% endif %}
+
+    <div class="form-actions">
+        {% if form.instance.prev %}
+        <input class="btn btn-primary cancel" type="submit" value="Précédent" name="precedent">
+        {% endif %}
+
+        <input  class="btn btn-primary" type="submit" value="Je valide" name="valider">
+    </div>
+</form>
+    {% block form_script %}{% endblock %}
+{% endblock %}

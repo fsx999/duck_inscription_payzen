@@ -1,0 +1,47 @@
+{% load floppyforms %}
+<legend>Vos frais pédagogique s'élèvent  à : <span id="tarif">{{ object.wish.frais_peda}}</span> euros.</legend>
+
+<div class='alert alert-info'>
+                Lors de la première inscription en {{  object.wish.etape.label }}, vous pouvez vous inscrire à un seul semestre
+                 (demi-tarif) ou bien à une année
+                complête (plein-tarif). L'inscription à un seul semestre ne ne vous permet pas de valider votre
+                 {{  object.wish.etape.label }} en une année.
+                <hr>
+</div>
+{% formrow form.demi_annee %}
+
+
+<div class="alert alert-danger" id="confirmation_annee_complete">
+ <h4 class="alert-heading">Attention</h4>
+Vous avez choisi de vous inscrire à une année complête. Sachez que même si vous ne terminez pas le
+{{  object.wish.step.label }}
+ cette année, vous <strong>ne pourrez obtenir aucune forme de remboursement</strong>,
+  ni de réduction sur votre réinscription pour cette raison.
+</div>
+
+<script>
+    $(document).ready(function(){
+        function demi_annee(element){
+            if($(element).val()=='false'){
+               $("#confirmation_annee_complete").show();
+               tarif = $("#tarif");
+               if(tarif.hasClass('demi_annee')){
+                   tarif.removeClass('demi_annee');
+                   tarif.text(tarif.text()*2);
+               }
+           }
+           else{
+               $("#confirmation_annee_complete").hide();
+               tarif = $("#tarif");
+               if(!tarif.hasClass('demi_annee')){
+                   tarif.addClass('demi_annee');
+                   tarif.text(tarif.text()/2);
+               }
+           }
+        }
+        demi_annee($("#{{ form.demi_annee|id }}"));
+        $("#{{ form.demi_annee|id }}").change(function(){
+           demi_annee($(this));
+        });
+    });
+</script>

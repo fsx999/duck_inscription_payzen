@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="page-header center">Centre de gestion</h1>
+    <div class="well">
+        <p>L'<strong>Institut d'Enseignement à Distance</strong> prend en charge la gestion pédagogique de vos études à
+        distance.
+        Sauf dans certains cas particuliers, indiqués ci-dessous, <strong>il prend également en charge la gestion administrative
+        et financière de vos études.</strong> Il peut délivrer des attestations de présence (aux examens, aux regroupements, aux
+        soutenances),
+        des certificats de scolarité et toutes sortes d'actes attestant du suivi pédagogique, mais ni devis ni
+        attestation mensuelle d'activité.
+        Vous êtes considéré alors comme étant en <strong>formation initiale</strong> (avec les tarifs qui y correspondent), même si vous êtes en <strong>reprise d'étude.</strong></p>
+        <br>
+        <center><a class="btn btn-primary" href="?centre=ied">Je choisis l'IED comme centre de gestion</a></center>
+    </div>
+
+
+
+    <div class="well">
+        <p>Si votre formation est <strong>financée par un organisme</strong> (CIF, DIF, plan de formation, période ou contrat
+        de professionnalisation),
+        et si vous avez besoin d'un <strong>suivi financier spécifique</strong> (devis, convention, etc.) ou d'attestations mensuelles
+        d'assiduité,
+        c'est la <strong>Formation Permanente</strong> qui prendra en charge la gestion administrative et financière de vos études.
+        Vous êtes considéré alors comme étant en formation continue (avec les tarifs qui y correspondent).</p>
+        <br>
+        <center><a class="btn btn-primary" href="?centre=fp">Je choisis la Formation Permanente comme centre de gestion</a></center>
+    </div>
+
+{% endblock %}
