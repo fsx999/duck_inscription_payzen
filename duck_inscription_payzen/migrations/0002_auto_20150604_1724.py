@@ -9,7 +9,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_payzen', '0005_auto_20150604_1717'),
+        ('django_payzen', '0004_auto_20141221_2140'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('duck_inscription_payzen', '0001_initial'),
     ]
