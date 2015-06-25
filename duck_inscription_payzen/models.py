@@ -300,3 +300,9 @@ class DuckInscriptionPaymentRequest(RequestDetails, CustomerDetails,
         self.set_vads_payment_config()
         self.set_signature()
         self.save()
+
+    def copy_wish(self, wish):
+        self.vads_cust_email = wish.individu.user.email
+        self.vads_cust_address = wish.individu.get_adresse_annuelle_simple()
+        self.vads_cust_id = wish.individu.code_opi
+

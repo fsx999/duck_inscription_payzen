@@ -12,24 +12,7 @@ from duck_inscription_payzen.forms import ChoixPaiementDroitForm, DemiAnneeForm,
     ValidationPaiementForm
 
 __author__ = 'paulguichon'
-class OuverturePaiementView(TemplateView, WishIndividuMixin):
-    template_name = "duck_inscription_payzen/ouverture_paiement.html"
 
-    def get_context_data(self, **kwargs):
-        context = super(OuverturePaiementView, self).get_context_data(**kwargs)
-        context['wish'] = self.wish
-        return context
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        wish = context['wish']
-        try:
-
-            wish.dossier_inscription()
-            return redirect(wish.get_absolute_url())
-        except xworkflows.ForbiddenTransition as e:
-            pass
-        return self.render_to_response(context)
 
 
 class ChoixIedFpView(TemplateView):
@@ -132,11 +115,11 @@ class PaiementView(TemplateView, WishIndividuMixin):
         payment_request.vads_url_success=url_pattern.format(host='http://preins:8081', url=url, get='success')
         payment_request.vads_url_refused=url_pattern.format(host='http://preins:8081', url=url, get='refused')
         payment_request.vads_url_cancel=url_pattern.format(host='http://preins:8081', url=url, get='cancel')
-        payment_request.vads_order_info="Loading Data c'est d'la boulette"
-        payment_request.vads_order_info2="puis Blues Pills aussi"
+        payment_request.vads_order_info=self.wish.code_dossier
+        payment_request.vads_order_info2="{} {}".format(self.wish.code_dossier, self.wish.individu.code_opi)
         payment_request.vads_order_id=p.pk
         payment_request.save()
-
+        payment_request.copy_wish(self.wish)
         context= super(PaiementView, self).get_context_data(**kwargs)
         context['object'] = payment_request
         return context
