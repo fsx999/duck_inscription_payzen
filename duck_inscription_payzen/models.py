@@ -44,6 +44,7 @@ NEXT = 2
 class PaiementState(xwf_models.Workflow):
     log_model = 'duck_inscription_payzen.PaiementStateLog'
     states = (
+        ('choix_ied_fp', 'Choix centre'),
         ('droit_univ', 'Droit universitaire'),
         ('choix_demi_annee', 'Inscription aux semestres'),
         ('nb_paiement', "Choisir le nombre de paiements"),
@@ -52,11 +53,12 @@ class PaiementState(xwf_models.Workflow):
         ('error', 'Erreur'),
         ('failure', 'Failure'),
         ('done', 'Effectué'),
+
     )
-    initial_state = 'droit_univ'
+    initial_state = 'choix_ied_fp'
 
     transitions = (
-        ('droit_univ', ('failure', 'error', 'choix_demi_annee', 'nb_paiement'), 'droit_univ'),
+        ('droit_univ', ('failure', 'error', 'choix_demi_annee', 'nb_paiement', 'choix_ied_fp'), 'droit_univ'),
         ('choix_demi_annee', ('droit_univ', 'nb_paiement'), 'choix_demi_annee'),
         ('nb_paiement', ('droit_univ', 'choix_demi_annee', 'recapitulatif'),'nb_paiement'),
         ('recapitulatif', 'nb_paiement', 'recapitulatif'),

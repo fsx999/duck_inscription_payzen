@@ -6,9 +6,9 @@ from duck_inscription_payzen import views
 __author__ = 'paulguichon'
 
 urlpatterns = [
-    url(r'^ouverture_inscription/(?P<pk>\d+)/$',
-        wish_verif_etape_and_login(views.OuverturePaiementView.as_view()), name="ouverture_inscription"),
 
+    url(r'^dispatch/(?P<pk>\d+)/$', wish_verif_etape_and_login(views.DispatchView.as_view()),
+        name="dispatch"),
     url(r'^choix_ied_fp/(?P<pk>\d+)/$', wish_verif_etape_and_login(views.ChoixIedFpView.as_view()),
         name="choix_ied_fp"),
     url(r'^droit_univ/(?P<pk>\d+)/$', wish_verif_etape_and_login(views.DroitView.as_view()), name="droit_univ"),
