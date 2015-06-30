@@ -3,13 +3,14 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django_payzen.models import PaymentRequest, ThemeConfig, MultiPaymentConfig, CustomPaymentConfig, PaymentResponse, \
     RequestDetails, CustomerDetails, ShippingDetails, OrderDetails, auth_user_model
-from duck_inscription.models import Wish
+from duck_inscription.models import Wish, CentreGestionModel
 from django_payzen import constants, app_settings, tools
 from django_xworkflows import models as xwf_models
 from xworkflows import  before_transition, on_enter_state
 import datetime
 
 from django.utils.timezone import utc
+import xworkflows
 
 __author__ = 'paulguichon'
 
@@ -81,6 +82,20 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
     nb_paiement_frais = models.IntegerField(verbose_name=u"Nombre de paiements pour les frais pédagogiques", default=1)
     demi_annee = models.BooleanField(default=False)
 
+    @before_transition('droit_univ')
+    def before_transition_droit_univ(self):
+        wish = self.wish
+        wish.valide_liste()
+        if not wish.centre_gestion:
+            wish.centre_gestion = CentreGestionModel.objects.get(centre_gestion='ied')
+
+        if not wish.is_ok and not wish.is_reins_formation() and not wish.centre_gestion.centre_gestion == 'fp':
+            try:
+                wish.liste_attente_inscription()
+            except xworkflows.InvalidTransitionError:
+                pass
+
+
     @on_enter_state('paiement')
     def on_enter_state_paiement(self, res, *arg, **kwargs):
         if not self.moyen_paiement.type == 'CB':
@@ -129,6 +144,8 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
                 getattr(self, prev)()
             except xwf_models.AbortTransition:
                 pass
+            except AttributeError:
+                return False
             return True
         else:
             return False

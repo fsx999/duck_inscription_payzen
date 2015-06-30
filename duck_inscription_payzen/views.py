@@ -34,11 +34,12 @@ class ChoixIedFpView(TemplateView):
             try:
                 if centre == 'fp':
                     wish.inscription()
+                    return redirect(wish.get_absolute_url())
                 else:
-                    wish.droit_universitaire()
+                    wish.paiementallmodel.droit_univ()
             except xworkflows.InvalidTransitionError:
                 pass
-            return redirect(wish.get_absolute_url())
+            return redirect(wish.paiementallmodel.get_absolute_url())
         return super(ChoixIedFpView, self).get(request, *args, **kwargs)
 
 
@@ -59,6 +60,7 @@ class DroitView(UpdateView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
+        print self.object.state, self.object.wish.state
         if self.object.state.is_done :
             return redirect(self.object.wish.get_absolute_url())
         if self.object.state.is_paiement or self.object.state.is_error or self.object.state.is_failure:
@@ -78,8 +80,6 @@ class DroitView(UpdateView):
             return self.object.get_absolute_url()
         else:
             wish = self.request.user.individu.wishes.get(pk=self.kwargs['pk'])
-
-            wish.inscription()
             return wish.get_absolute_url()
 
     def get_form_class(self):
