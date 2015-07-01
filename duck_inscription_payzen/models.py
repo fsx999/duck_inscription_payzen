@@ -47,7 +47,7 @@ class PaiementState(xwf_models.Workflow):
     states = (
         ('choix_ied_fp', 'Choix centre'),
         ('droit_univ', 'Droit universitaire'),
-        ('choix_demi_annee', 'Inscription aux semestres'),
+        ('choix_demi_annee', 'Inscription à un semestre ou à l\'année'),
         ('nb_paiement', "Choisir le nombre de paiements"),
         ('recapitulatif', "Récapitulatif"),
         ('paiement', 'Paiement CB'),
@@ -151,7 +151,6 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
             return False
 
     def recap(self):
-
         return not self.liste_etapes[self.etape][NEXT]
 
     def prev(self):
@@ -163,6 +162,22 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
 
     def template_name(self):
         return 'duck_inscription_payzen/%s.html' % self.state
+
+    @property
+    def droit_total(self):
+        """
+        Api public: à implementer
+        :return: les droits universitaire + secu + frais medicaux
+        """
+        return self.wish.droit_total()
+
+    @property
+    def frais_peda(self):
+        """
+        Api public: à implementer
+        :return:
+        """
+        return self.wish.frais_peda()
 
     def title(self):
         return self.state.title
@@ -187,7 +202,7 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
 
     @property
     def total(self):
-        total = self.wish.droit_total() + self.wish.frais_peda()
+        total = self.droit_total + self.frais_peda
         return str(int(total*100))
 
     @property
@@ -195,7 +210,7 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
         return str(int((self.wish.droit_total() + (self.wish.frais_peda()/self.nb_paiement_frais))*100))
 
     def get_context(self):
-        pass
+        return {'paiement': self}
 
     def get_templates(self):
         template = []

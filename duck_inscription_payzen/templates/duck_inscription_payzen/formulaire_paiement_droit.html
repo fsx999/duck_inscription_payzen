@@ -1,69 +1,50 @@
-{% include 'duck_inscription/wish/include/entete_formulaire_paiement.html' %}
+{% include 'duck_inscription_payzen/entete_formulaire_paiement.html' %}
 {% load lib_inscription %}
 <center>
-<h1><b>FORMULAIRE DE PAIEMENT </b>{% annee_en_cour %}</h1>
-<h1>Droits universitaires (et sécurité sociale étudiante)</h1>
+<h3><b>FORMULAIRE DE PAIEMENT </b>{% annee_en_cour %}</h3>
+<h3>Droits universitaires (et sécurité sociale étudiante)</h3>
 </center>
-
-
-<table>
-	<tr>
-		<td><b>DIPLÔME PRÉPARÉ : </b></td>
-        <td>{{ wish.etape.label }}</td>
-	</tr>
-    <tr>
-		<td><b>ETUDIANT : </b></td>
-        <td>{{ individu.last_name }} {{ individu.common_name }} {{ individu.first_name1 }}
+<div class="row">
+    <div class="col-xs-4"><b>DIPLÔME PRÉPARÉ : </b></div>
+    <div class="col-xs-8">{{ wish.etape.label }}</div>
+</div>
+<div class="row">
+    <div class="col-xs-4"><b>ETUDIANT :</b></div>
+    <div class="col-xs-8">{{ individu.last_name }} {{ individu.common_name }} {{ individu.first_name1 }}
             {{ individu.first_name2 }}
             {{ individu.first_name3 }}
-            {{ individu.code_opi }}</td>
-	</tr>
-{% if paiement_droit.autre_payeur %}
-    <tr>
-		<td><b>PAYEUR :</b></td>
-        <td>{{ paiement_droit.autre_payeur }}</td>
-	</tr>
-{% endif %}
-</table>
+            {{ individu.code_opi }}</div>
+</div>
+
 <hr>
 <p>Votre dossier d'inscription doit <strong>obligatoirement</strong> contenir <b>tous</b> les paiements ou les preuves de ces paiements, sans quoi il ne sera pas traité.
 </p>
-<table>
+<table class="table table-bordered">
     <tr>
-        <td class="first gauche droite padding"><b>Tarif pour les droits
-            universitaires</b></td>
+        <td class="first gauche droite padding"><b>Tarif</b></td>
         <td class="first gauche droite padding"><b>Mode de paiement</b></td>
         <td class="first gauche droite padding"><b>Mise à l'encaissement</b></td>
     </tr>
     <tr>
         <td class="gauche first droite">
-            <table>
-                <tr>
-                    <td class="first padding">{{ wish.droit_univ|floatformat:-2 }} euros</td>
-                </tr>
-                <tr>
-                    <td class="first padding"><b>Tarif pour les droits de
-                        sécurité sociale étudiante</b></td>
-                </tr>
-                <tr>
-                    <td class="first padding">{{ wish.tarif_secu|floatformat:-2}} euros</td>
-                </tr>
-            </table>
+            <b>Tarif pour les droits
+            universitaires</b> : {{ wish.droit_univ|floatformat:-2 }} euros <br/>
+            <b>Tarif pour les droits de
+                        sécurité sociale étudiante</b> : {{ wish.tarif_secu|floatformat:-2}} euros
+
         </td>
-        <td class="gauche first droite padding">{{ paiement_frais.moyen_paiement }}<br></td>
+        <td class="gauche first droite padding">{{ paiement.moyen_paiement }}<br></td>
         <td class="gauche first droite padding">au moment de l'inscription<br></td>
     </tr>
-</table>
-<table class="not_magin padding"><tr>
-        <td class="first gauche droite last"> <center>TOTAL A PAYER : {{ wish.droit_total|floatformat:-2 }} euros</center></td>
-    </tr></table>
-<table>
     <tr>
-        <td class="padding"><i>Le {% now "d/m/Y" %}<br />
-            Signature de l'étudiant :</i>
-        </td>
+        <td colspan="3"><center>TOTAL A PAYER : {{ wish.droit_total|floatformat:-2 }} euros</center></td>
     </tr>
 </table>
+<div class="row">
+    <div class="col-xs-4"><i>Le {% now "d/m/Y" %}</i></div>
+    <div class="col-xs-8">Signature de l'étudiant :</div>
+</div>
+
 {% if paiement_frais.moyen_paiement.type != 'v' %}
 <br>
     <br>
@@ -86,7 +67,7 @@ le traitement des chèques étant automatisé vous veillerez tout particulièrem
     <br>
     <div>Important : <br/>
 
-vous voudrez bien programmer le virement pour acquittement des droits d'inscription universitaires à partir du <strong>04 septembre 2014.</strong><br/>
+vous voudrez bien programmer le virement pour acquittement des droits d'inscription universitaires à partir du <strong>04 septembre 2015.</strong><br/>
 <br/>
 --La somme est à virer sur le compte bancaire de l'IED Université Paris 8.<br/>
 
@@ -104,7 +85,8 @@ IED Etudiant {{ paiement_droit.wish.etape.cod_etp }} {{ individu.code_opi }} {{ 
 <center><h1>CONDITIONS DE PAIEMENT</h1>
 </center>
 <p><b>Le paiement des droits doit être obligatoirement joint au dossier d'inscription ;</b></p>
-{% include 'duck_inscription/wish/include/condition_paiement.html' %}
+{% include 'duck_inscription_payzen/condition_paiement.html' %}
+</div>
 </body>
 </html>
 

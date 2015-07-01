@@ -1,0 +1,62 @@
+{% load static from staticfiles %}
+{% load lib_inscription %}
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static "bootstrap3/css/bootstrap.css" %}">
+    <script src="{% static "bootstrap3/js/bootstrap.js" %}"></script>
+    <style type="text/css">
+        .barcode {
+            font-family: CCode39;
+            font-size: 30px;
+        }
+
+        #logo_p8{
+            zoom:30%;
+        }
+
+        body{
+
+            font-size: 13px;
+            text-align: justify;
+
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4">
+                <img class="zomm" id="logo_p8" src="{% static "images/logop8.jpg" %}"/>
+        </div>
+        <div class="col-xs-4">
+            <br/>
+            </div>
+        <div class="col-xs-4"><span class="pull-right"><img id="logo_ied" src="{% static "images/logo-ied.jpg" %}"/></span>
+        </div>
+    </div>
+
+      <div class="row">
+        <div class="col-xs-6">
+                <p>
+        UNIVERSITE PARIS 8<br/>
+        Institut d'Enseignement à Distance <br/>
+        Service de la Scolarité – Bâtiment D <br/>
+        2 rue de la Liberté – 93526 SAINT DENIS cedex<br/>
+        tel : 01 49 40 72 00, fax : 01 49 40 72 04,<br/>internet : www.iedparis8.net<br/>
+        </p>
+        </div>
+          <br/>
+        <div class="col-xs-6"><center><span class="barcode">*{{ individu.code_opi }}*</span>
+                <br/>{{ individu.code_opi }}</center>
+            <br/>
+            <center><span class="barcode">*{{ wish.code_dossier }}*</span><br/>{{ wish.code_dossier }}</center></div>
+        </div>
+    </div>
+
+
+<hr />
+Réservé à l'administration : - n° d'étudiant :{{ wish.individu.student_code|default_if_none:"…………….." }}          - date d'inscription :……………………………
+<hr />

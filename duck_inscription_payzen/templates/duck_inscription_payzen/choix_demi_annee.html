@@ -1,4 +1,5 @@
 {% load floppyforms %}
+{% block titre_form %}{% endblock %}
 <legend>Vos frais pédagogique s'élèvent  à : <span id="tarif">{{ object.wish.frais_peda}}</span> euros.</legend>
 
 <div class='alert alert-info'>
@@ -14,7 +15,7 @@
 <div class="alert alert-danger" id="confirmation_annee_complete">
  <h4 class="alert-heading">Attention</h4>
 Vous avez choisi de vous inscrire à une année complête. Sachez que même si vous ne terminez pas le
-{{  object.wish.step.label }}
+{{  object.wish.etape.label }}
  cette année, vous <strong>ne pourrez obtenir aucune forme de remboursement</strong>,
   ni de réduction sur votre réinscription pour cette raison.
 </div>
@@ -22,26 +23,35 @@ Vous avez choisi de vous inscrire à une année complête. Sachez que même si v
 <script>
     $(document).ready(function(){
         function demi_annee(element){
-            if($(element).val()=='false'){
+            if($(element).val() != '' && $(element).val()==0){
                $("#confirmation_annee_complete").show();
                tarif = $("#tarif");
+
                if(tarif.hasClass('demi_annee')){
                    tarif.removeClass('demi_annee');
-                   tarif.text(tarif.text()*2);
+                   tarif.text(parseInt(tarif.text())*2);
                }
            }
-           else{
+            else {
                $("#confirmation_annee_complete").hide();
                tarif = $("#tarif");
-               if(!tarif.hasClass('demi_annee')){
+               if($(element).val() != '' && !tarif.hasClass('demi_annee')){
                    tarif.addClass('demi_annee');
-                   tarif.text(tarif.text()/2);
+                   tarif.text(parseInt(tarif.text())/2);
                }
            }
         }
-        demi_annee($("#{{ form.demi_annee|id }}"));
-        $("#{{ form.demi_annee|id }}").change(function(){
+        demi_annee($("#id_demi_annee"));
+        $("#id_demi_annee").change(function(){
            demi_annee($(this));
         });
+        $('#form').validate({
+            rules: {
+                demi_annee: {
+                    required: true
+                }
+            }
+        });
+
     });
 </script>

@@ -60,7 +60,6 @@ class DroitView(UpdateView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        print self.object.state, self.object.wish.state
         if self.object.state.is_done :
             return redirect(self.object.wish.get_absolute_url())
         if self.object.state.is_paiement or self.object.state.is_error or self.object.state.is_failure:

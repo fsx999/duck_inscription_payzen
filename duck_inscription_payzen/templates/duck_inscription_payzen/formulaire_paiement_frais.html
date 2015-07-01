@@ -1,9 +1,20 @@
-{% include 'duck_inscription/wish/include/entete_formulaire_paiement.html' %}
+{% include 'duck_inscription_payzen/entete_formulaire_paiement.html' %}
 {% load lib_inscription %}
 <center>
-<h1><b>FORMULAIRE DE PAIEMENT</b> {% annee_en_cour %}</h1>
-<h1>Frais propres à l’enseignement à distance</h1>
+<h3><b>FORMULAIRE DE PAIEMENT</b> {% annee_en_cour %}</h3>
+<h3>Frais propres à l’enseignement à distance</h3>
 </center>
+<div class="row">
+    <div class="col-xs-4"><b>DIPLÔME PRÉPARÉ : </b></div>
+    <div class="col-xs-8">{{ wish.etape.label }}</div>
+</div>
+<div class="row">
+    <div class="col-xs-4"><b>ETUDIANT :</b></div>
+    <div class="col-xs-8">{{ individu.last_name }} {{ individu.common_name }} {{ individu.first_name1 }}
+            {{ individu.first_name2 }}
+            {{ individu.first_name3 }}
+            {{ individu.code_opi }}</div>
+</div>
 <table>
     <tr>
         <td><b>DIPLÔME PRÉPARÉ : </b></td>
@@ -131,6 +142,7 @@ Tous les règlements doivent être libellés en EUROS (compensables en FRANCE ME
     <p><strong>Dans tous les cas, la régularité de la demande de remboursement est appréciée souverainement par l'agent
         comptable de l’Université sur proposition de l'IED.</strong></p>
     <div class="border_bottom">&nbsp;</div>
+</div>
 </div>
 </body>
 </html>
