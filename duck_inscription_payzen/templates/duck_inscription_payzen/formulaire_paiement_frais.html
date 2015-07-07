@@ -77,9 +77,18 @@
 <div class="alert alert-warning">
 {% if paiement.moyen_paiement.type != 'V' %}
     <br>
-    <div>
-        Vous devez libeller votre chèque à l'ordre de : <b>{{ label|default:"IED Université Paris 8 " }}</b>.
-    </div>
+Seuls<br>
+
+--les chèques ordinaires<br>
+--les chèques de banque<br>
+
+sont acceptés.<br>
+   Les chèques étrangers ne sont pas acceptés par l'IED.<br>
+
+Le traitement des chèques étant automatisé vous veillerez tout particulièrement à renseigner et de manière très lisible, sans rature, surcharge ou grattage , les ordre, date, signature, prix concordants en chiffres et lettres.
+    <br/>
+
+--Vous devez libeller votre chèque à l'ordre de : <strong>IED Université Paris 8.</strong>
         <br>
 
     {% for nb in paiement.range_paiement %}
@@ -93,7 +102,8 @@
 {% else %}
     <br>
     <div>
-    vous voudrez bien programmer le virement unique, ou premier virement en cas de pluralité de virements, pour acquittement des droits propres à l'enseignement à distance, à partir du 04 septembre 2014
+    Vous devez joindre imperativement à votre dossier d'inscription le justificatif de virement effectué pour paiement de la totalité ou de la première échéance des frais d'enseignements à distance sous peine
+    rejet de votre dossier.
         <br/>
     Vous veillerez obligatoirement à faire enregistrer par votre banque le ou les intitulé/s de virement suivant : <br/>
     {% for nb in paiement.range_paiement %}
@@ -128,7 +138,7 @@ Tous les règlements doivent être libellés en EUROS (compensables en FRANCE ME
 </p>
 <p><strong>En cas de non respect des modalités de paiement</strong> (chèque sans provision, virement non effectué, paiement incomplet),
     l'étudiant se verra suspendu dans sa qualité et ne pourra plus bénéficier des prestations de l'IED (plateforme, examens).
-    Toute échéance impayée entraînera, outre des poursuites judiciaires, l'annulation de votre inscription, de vos résultats pédagogiques et de votre couverture sociale.
+    Toute échéance impayée entraînera, outre des poursuites judiciaires, l'annulation de vos résultats pédagogiques et de votre couverture sociale.
 </p>
 
 {% include 'duck_inscription_payzen/condition_paiement.html' %}

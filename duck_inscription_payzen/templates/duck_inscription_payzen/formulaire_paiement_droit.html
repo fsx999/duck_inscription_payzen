@@ -55,13 +55,13 @@
     <br>
 
 
-Seuls
+Seuls<br>
 
---les chèques ordinaires
---les chèques de banque
+--les chèques ordinaires<br>
+--les chèques de banque<br>
 
-sont acceptés.
-   Les chèques étrangers ne sont pas acceptés par l'IED.
+sont acceptés.<br>
+   Les chèques étrangers ne sont pas acceptés par l'IED.<br>
 
 Le traitement des chèques étant automatisé vous veillerez tout particulièrement à renseigner et de manière très lisible, sans rature, surcharge ou grattage , les ordre, date, signature, prix concordants en chiffres et lettres.
     <br/>
@@ -79,11 +79,10 @@ Le traitement des chèques étant automatisé vous veillerez tout particulièrem
     <br>
     <div>Important : <br/>
 
-vous voudrez bien programmer le virement pour acquittement des droits d'inscription universitaires à partir du <strong>04 septembre 2015.</strong><br/>
+    Vous devez joindre imperativement à votre dossier d'inscription le justificatif du virement effectué pour paiement de la totalité  des droits universitaires sous peine
+    rejet de votre dossier.<br/>
 <br/>
 --La somme est à virer sur le compte bancaire de l'IED Université Paris 8.<br/>
-
---Vous devez impérativement joindre le récépissé d'ordre de virement établi et tamponné par votre banque. <br/>
 
 --Vous veillerez obligatoirement à faire enregistrer par votre banque l'intitulé de virement suivant :
 <strong>IED Etudiant {{ paiement.wish.etape.cod_etp }} {{ individu.code_opi }} {{ individu.last_name }} 0</strong><br/>
@@ -94,10 +93,16 @@ vous voudrez bien programmer le virement pour acquittement des droits d'inscript
 {% endif %}
 </div>
 <hr>
-
-<center><h4>CONDITIONS DE PAIEMENT</h4>
+ <center><h4>CONDITIONS GÉNÉRALES DE PAIEMENT</h4>
 </center>
 <p><b>Le paiement des droits doit être obligatoirement joint au dossier d'inscription.</b></p>
+<p>
+Tous les règlements doivent être libellés en EUROS (compensables en FRANCE METROPOLITAINE).
+</p>
+<p><strong>En cas de non respect des modalités de paiement</strong> (chèque sans provision, opposition sur cheque, virement non effectué, paiement incomplet),
+    l'étudiant se verra suspendu dans sa qualité et ne pourra plus bénéficier des prestations de l'IED (plateforme, examens).
+    Toute échéance impayée entraînera, outre des poursuites judiciaires, l'annulation  de vos résultats pédagogiques et de votre couverture sociale.
+</p>
 {% include 'duck_inscription_payzen/condition_paiement.html' %}
 </div>
 </body>
