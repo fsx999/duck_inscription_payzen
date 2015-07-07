@@ -117,15 +117,15 @@ class PaiementView(TemplateView, WishIndividuMixin):
 
         )
         if settings.DEBUG:
-            url = 'http://preins:8081'
+            host = 'http://preins:8081'
         else:
-            url = 'https://preins.iedparis8.net'
+            host = 'https://preins.iedparis8.net'
         payment_request.vads_trans_date = None
         payment_request.vads_trans_id = None
         payment_request.vads_amount=p.total
-        payment_request.vads_url_success=url_pattern.format(host=url, url=url, get='success')
-        payment_request.vads_url_refused=url_pattern.format(host=url, url=url, get='refused')
-        payment_request.vads_url_cancel=url_pattern.format(host=url, url=url, get='cancel')
+        payment_request.vads_url_success=url_pattern.format(host=host, url=url, get='success')
+        payment_request.vads_url_refused=url_pattern.format(host=host, url=url, get='refused')
+        payment_request.vads_url_cancel=url_pattern.format(host=host, url=url, get='cancel')
         payment_request.vads_order_info=self.wish.code_dossier
         payment_request.vads_order_info2="{} {}".format(self.wish.code_dossier, self.wish.individu.code_opi)
         payment_request.vads_order_id=p.pk
