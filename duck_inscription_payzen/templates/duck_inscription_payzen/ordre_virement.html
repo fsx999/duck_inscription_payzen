@@ -1,0 +1,84 @@
+{% load static from staticfiles %}
+{% load lib_inscription %}
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static "bootstrap3/css/bootstrap.css" %}">
+    <script src="{% static "bootstrap3/js/bootstrap.js" %}"></script>
+    <style type="text/css">
+        .barcode {
+            font-family: CCode39;
+            font-size: 30px;
+        }
+
+        #logo_p8{
+            zoom:30%;
+        }
+
+        body{
+
+            font-size: 13px;
+            text-align: justify;
+
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <p>
+Ce document contient tous les renseignements à transmettre à votre banque pour établir les virements, vous ne devez pas nous l'envoyer.</p>
+
+<div>
+ <b>Les virements sont à créditer au profit de :</b>
+<br>
+
+    <center>Université Paris 8 <br>
+    2 rue de la Liberté <br>
+    93526 SAINT-DENIS Cedex <br>
+    </center>
+        <br>
+
+</div>
+<center><b>RIB</b></center>
+{% include 'duck_inscription_payzen/rib_ied.html' %}
+    <br>
+
+<center><h1>Il faudra réaliser les {{ paiement.nb_paiement_frais|add:1 }} virements suivants.</h1></center>
+<div>
+    <h4>Virement concernant les droits universitaires</h4>
+   <p> <strong>Le libellé du virement doit être : IED  {{ paiement.wish.etape.cod_etp }} {{ individu.code_opi }} {{ individu.last_name }} 0</strong> <br>
+    Le motif du virement doit être : IED  {{ paiement.wish.etape.cod_etp }} {{ individu.code_opi }} {{ individu.last_name }} 0 <br>
+       Le montant doit être de : {{ wish.droit_total|floatformat:2 }} euros <br>
+        Le virement doit être effectué au moment de l'inscription
+    </p>
+
+</div>
+<hr>
+
+{% for nb in paiement.range_paiement %}
+
+    <div>
+    <h4>Virement des frais pédagogiques numéro {{ forloop.counter }}</h4>
+    <p><strong>Le libellé du virement doit être : IED {{ paiement.wish.etape.cod_etp }} {{ individu.code_opi }} {{ individu.last_name }} {{ nb|add:1}}</strong><br>
+    Le motif du virement doit être : IED {{ paiement.wish.etape.cod_etp }} {{ individu.code_opi }} {{ individu.last_name }} {{ nb|add:1}}<br>
+Le montant doit être de : {{ paiement.echeancier_frais_peda|floatformat:-2 }} euros <br>
+         Le virement doit être effectué  {% if forloop.counter == 1 %}
+          au moment de l'inscription
+            {% elif forloop.counter == 2 %}
+            Le 2 novembre 2015
+            {% else %}
+            Le 2 janvier 2016
+        {% endif %} 
+    </p>
+    </div>
+    <hr>
+{% endfor %}
+<br>
+<h4>Il est nécessaire de respecter scrupuleusement les libellés et les dates, afin que les paiements puissent être constatés.</h4>
+</div>
+</body>
+</html>
+

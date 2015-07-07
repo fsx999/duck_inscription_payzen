@@ -204,13 +204,40 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
     def total(self):
         total = self.droit_total + self.frais_peda
         return str(int(total*100))
+    @property
+    def memsualite(self):
+        return float(self.total_euro - self.first_paiement_euro)/float(self.nb_paiement_frais-1)
+    @property
+    def total_euro(self):
+        total = self.droit_total + self.frais_peda
+        return float(total)
 
     @property
     def first_paiement(self):
         return str(int((self.wish.droit_total() + (self.wish.frais_peda()/self.nb_paiement_frais))*100))
 
+    @property
+    def first_paiement_euro(self):
+        return float((self.wish.droit_total() + (self.wish.frais_peda()/self.nb_paiement_frais)))
+    @property
+    def echeancier(self):
+        date = datetime.datetime.strptime(self.paiement_request.vads_trans_date,  "%Y%m%d%H%M%S").strftime("%d/%m/%Y")
+        if self.nb_paiement_frais == 1:
+            return [[date, self.total_euro]]
+        else:
+
+            result = [[date, self.first_paiement_euro]]
+            for x in range(self.nb_paiement_frais-1):
+                result.append(['+{} jours'.format(str(30*(self.nb_paiement_frais-1))), self.memsualite])
+            return result
     def get_context(self):
         return {'paiement': self}
+    @property
+    def range_paiement(self):
+        return range(self.nb_paiement_frais)
+    @property
+    def echeancier_frais_peda(self):
+        return float(self.frais_peda)/float(self.nb_paiement_frais)
 
     def get_templates(self):
         template = []
@@ -219,8 +246,9 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
         else:
             template.extend([{'name': "duck_inscription_payzen/formulaire_paiement_droit.html"},
          {'name': "duck_inscription_payzen/formulaire_paiement_frais.html"}])
+            pass
         if self.moyen_paiement.type == 'V':
-            template.extend([ {'name': 'duck_inscription_payzen/autorisation_photo.html'}])
+            template.extend([ {'name': 'duck_inscription_payzen/ordre_virement.html'}])
         return template
 
 class DuckInscriptionPaymentRequest(RequestDetails, CustomerDetails,

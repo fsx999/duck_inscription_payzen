@@ -19,6 +19,7 @@
 <hr>
 <p>Votre dossier d'inscription doit <strong>obligatoirement</strong> contenir <b>tous</b> les paiements ou les preuves de ces paiements, sans quoi il ne sera pas traité.
 </p>
+<hr/>
 <table class="table table-bordered">
     <tr>
         <td class="first gauche droite padding"><b>Tarif</b></td>
@@ -34,7 +35,11 @@
 
         </td>
         <td class="gauche first droite padding">{{ paiement.moyen_paiement }}<br></td>
-        <td class="gauche first droite padding">au moment de l'inscription<br></td>
+        <td class="gauche first droite padding">{% if paiement.moyen_paiement.type != 'V' %}
+            Avant le 31 décembre 2015
+        {% else %}
+            Au moment de l'inscription
+        {% endif %} <br></td>
     </tr>
     <tr>
         <td colspan="3"><center>TOTAL A PAYER : {{ wish.droit_total|floatformat:-2 }} euros</center></td>
@@ -44,14 +49,21 @@
     <div class="col-xs-4"><i>Le {% now "d/m/Y" %}</i></div>
     <div class="col-xs-8">Signature de l'étudiant :</div>
 </div>
-
-{% if paiement_frais.moyen_paiement.type != 'v' %}
+<div class="alert alert-warning">
+{% if paiement.moyen_paiement.type != 'V' %}
 <br>
     <br>
 
-<div>
-Important : <br/>
-le traitement des chèques étant automatisé vous veillerez tout particulièrement à renseigner et de manière très lisible, sans rature, surcharge ou grattage , les ordre, date, signature, prix concordants en chiffres et lettres.
+
+Seuls
+
+--les chèques ordinaires
+--les chèques de banque
+
+sont acceptés.
+   Les chèques étrangers ne sont pas acceptés par l'IED.
+
+Le traitement des chèques étant automatisé vous veillerez tout particulièrement à renseigner et de manière très lisible, sans rature, surcharge ou grattage , les ordre, date, signature, prix concordants en chiffres et lettres.
     <br/>
 
 --Vous devez libeller votre chèque à l'ordre de : <strong>IED Université Paris 8.</strong>
@@ -59,10 +71,10 @@ le traitement des chèques étant automatisé vous veillerez tout particulièrem
     <br>
 
     Au dos du chèque veuillez reporter les informations suivantes :<b>
-    IED Etudiant {{ paiement_droit.wish.etape.cod_etp }} {{ individu.code_opi }} {{ individu.last_name }} 0
+    IED Etudiant {{ paiement.wish.etape.cod_etp }} {{ individu.code_opi }} {{ individu.last_name }} 0
 
 </b>
-</div>
+
 {% else %}
     <br>
     <div>Important : <br/>
@@ -74,17 +86,18 @@ vous voudrez bien programmer le virement pour acquittement des droits d'inscript
 --Vous devez impérativement joindre le récépissé d'ordre de virement établi et tamponné par votre banque. <br/>
 
 --Vous veillerez obligatoirement à faire enregistrer par votre banque l'intitulé de virement suivant :
-IED Etudiant {{ paiement_droit.wish.etape.cod_etp }} {{ individu.code_opi }} {{ individu.last_name }} 0<br/>
+<strong>IED Etudiant {{ paiement.wish.etape.cod_etp }} {{ individu.code_opi }} {{ individu.last_name }} 0</strong><br/>
 
 --Les frais de commission bancaire et interbancaire requis le cas échéant pour la réalisation du virement sont à votre charge<br/>
 
 --Veillez à prévoir le versement de la somme exacte due sous peine de vous voir opposer un refus d'inscription. </div> 
 {% endif %}
+</div>
 <hr>
 
-<center><h1>CONDITIONS DE PAIEMENT</h1>
+<center><h4>CONDITIONS DE PAIEMENT</h4>
 </center>
-<p><b>Le paiement des droits doit être obligatoirement joint au dossier d'inscription ;</b></p>
+<p><b>Le paiement des droits doit être obligatoirement joint au dossier d'inscription.</b></p>
 {% include 'duck_inscription_payzen/condition_paiement.html' %}
 </div>
 </body>

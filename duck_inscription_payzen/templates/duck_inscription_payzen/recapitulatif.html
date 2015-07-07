@@ -34,15 +34,11 @@
         <div class="control-group">
             <label class="control-label" for="">Vous payez en :</label>
 
-            <div class="controls"><label class=" btn">{{ object.nb_paiement_frais}} fois les frais pédagogiques</label></div>
+            <div class="controls"><label class=" btn">{{ object.nb_paiement_frais}} fois les frais pédagogiques {% if object.moyen_paiement.type == 'CB' %}
+                (échéancier page suivante)
+            {% endif %}</label></div>
         </div>
-    {% if object.demi_annee %}
-        <div class="control-group">
-            <label class="control-label" for="">Inscription à un semestre :</label>
 
-            <div class="controls"><label class=" btn">{{ object.demi_annee|yesno:"Oui, Non" }}</label></div>
-        </div>
-    {% endif %}
 
     <div class="form-actions">
         {% if form.instance.prev %}
