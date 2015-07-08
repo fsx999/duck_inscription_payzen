@@ -66,7 +66,7 @@ class PaiementState(xwf_models.Workflow):
         ('paiement', ('failure', 'error', 'recapitulatif'), 'paiement'),
         ('error', 'paiement', 'error'),
         ('failure', 'paiement', 'failure'),
-        ('done', 'paiement', 'done')
+        ('done', ('paiement', 'failure'), 'done')
     )
 class PaiementStateLog(xwf_models.BaseTransitionLog):
     paiement = models.ForeignKey('PaiementAllModel', related_name='log_paiement')
