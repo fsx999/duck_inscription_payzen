@@ -16,9 +16,9 @@ urlpatterns = [
     url(r'^choix_demi_annee/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.DroitView.as_view()), name="choix_demi_annee"),
     url(r'^nb_paiement/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.DroitView.as_view()), name="nb_paiement"),
     url(r'^recapitulatif/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.DroitView.as_view()), name="recapitulatif"),
-    url(r'^paiement/(?P<pk>\d+)/$', views.PaiementView.as_view(), name='paiement'),
-    url(r'^error/(?P<pk>\d+)/$', views.PaiementFailureView.as_view(), name='error'),
-    url(r'^faillure/(?P<pk>\d+)/$', views.PaiementFailureView.as_view(), name='failure'),
+    url(r'^paiement/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.PaiementView.as_view()), name='paiement'),
+    url(r'^error/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.PaiementFailureView.as_view()), name='error'),
+    url(r'^faillure/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.PaiementFailureView.as_view()), name='failure'),
 
 
 ]

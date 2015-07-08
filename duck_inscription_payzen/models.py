@@ -367,4 +367,5 @@ class DuckInscriptionPaymentRequest(RequestDetails, CustomerDetails,
         self.vads_cust_email = wish.individu.user.email
         self.vads_cust_address = wish.individu.get_adresse_annuelle_simple()
         self.vads_cust_id = wish.individu.code_opi
+        self.save()
 

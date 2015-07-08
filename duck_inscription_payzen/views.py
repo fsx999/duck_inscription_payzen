@@ -107,7 +107,7 @@ class PaiementView(TemplateView, WishIndividuMixin):
     def get_context_data(self, **kwargs):
 
         p = self.wish.paiementallmodel
-        url= reverse('paiement', kwargs={'pk': p.wish.pk})
+        url = reverse('paiement', kwargs={'pk': p.wish.pk})
         url_pattern = '{host}{url}?res={get}'
         try:
             payment_request = p.paiement_request
@@ -120,6 +120,7 @@ class PaiementView(TemplateView, WishIndividuMixin):
             host = 'http://preins:8081'
         else:
             host = 'https://preins.iedparis8.net'
+
         payment_request.vads_trans_date = None
         payment_request.vads_trans_id = None
         payment_request.vads_amount=p.total
