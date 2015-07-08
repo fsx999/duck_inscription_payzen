@@ -16,11 +16,11 @@ def inscription_payment_success(sender, **kwargs):
     paiement.wish.inscription()
 
 
-@receiver(response_error)
-def inscription_response_error(sender, **kwargs):
-    response = kwargs['response']
-    paiement = dip_mod.PaiementAllModel.objects.get(pk=response.vads_order_id)
-    paiement.error()
+# @receiver(response_error)
+# def inscription_response_error(sender, **kwargs):
+#     response = kwargs['response']
+#     paiement = dip_mod.PaiementAllModel.objects.get(pk=response.vads_order_id)
+#     paiement.error()
 
 
 @receiver(payment_failure)
