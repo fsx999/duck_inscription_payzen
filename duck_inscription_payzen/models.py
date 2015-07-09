@@ -68,6 +68,7 @@ class PaiementState(xwf_models.Workflow):
         ('failure', 'paiement', 'failure'),
         ('done', ('paiement', 'failure'), 'done')
     )
+
 class PaiementStateLog(xwf_models.BaseTransitionLog):
     paiement = models.ForeignKey('PaiementAllModel', related_name='log_paiement')
     MODIFIED_OBJECT_FIELD = 'paiement'
