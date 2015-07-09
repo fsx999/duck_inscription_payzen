@@ -1,26 +1,26 @@
 # coding=utf-8
-from django.core.urlresolvers import reverse
+from __future__ import unicode_literals
+from django.core.urlresolvers import reverse, NoReverseMatch
+__author__ = 'paulguichon'
 from django.conf import settings
 from django.views import generic
 from django.shortcuts import redirect
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, UpdateView
 from duck_inscription.models import CentreGestionModel
 from duck_inscription_payzen.models import PaiementAllModel, DuckInscriptionPaymentRequest
 from duck_inscription.views import WishIndividuMixin
 import xworkflows
-from django_payzen import models as pz_models
 from duck_inscription_payzen.forms import ChoixPaiementDroitForm, DemiAnneeForm, NbPaiementPedaForm, \
     ValidationPaiementForm
+
 
 class DispatchView(generic.View, WishIndividuMixin):
 
     def get(self, request, *args, **kwargs):
-        return redirect(self.wish.paiementallmodel.get_absolute_url())
-
-
-
-__author__ = 'paulguichon'
+        try:
+            return redirect(self.wish.paiementallmodel.get_absolute_url())
+        except NoReverseMatch:
+            return redirect(self.wish.get_absolute_url())
 
 
 class ChoixIedFpView(TemplateView):
