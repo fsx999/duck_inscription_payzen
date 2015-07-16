@@ -43,7 +43,7 @@ class ChoixIedFpView(TemplateView):
         return super(ChoixIedFpView, self).get(request, *args, **kwargs)
 
 
-class DroitView(UpdateView):
+class DroitView(UpdateView, WishIndividuMixin):
     model = PaiementAllModel
     template_name = "duck_inscription/individu/dossier_inscription/base_formulaire.html"
     forms = {
@@ -78,14 +78,14 @@ class DroitView(UpdateView):
         if self.object.next_step() and not self.object.state.is_done:
             return self.object.get_absolute_url()
         else:
-            wish = self.request.user.individu.wishes.get(pk=self.kwargs['pk'])
+            wish = self.wish
             return wish.get_absolute_url()
 
     def get_form_class(self):
         return self.forms[self.object.state]
 
     def get_object(self, queryset=None):
-        wish = self.request.user.individu.wishes.get(pk=self.kwargs['pk'])
+        wish = self.wish
         return PaiementAllModel.objects.get_or_create(wish=wish)[0]
 
 
