@@ -23,13 +23,13 @@ class DispatchView(generic.View, WishIndividuMixin):
             return redirect(self.wish.get_absolute_url())
 
 
-class ChoixIedFpView(TemplateView):
+class ChoixIedFpView(TemplateView, WishIndividuMixin):
     template_name = "duck_inscription_payzen/choix_ied_fp.html"
 
     def get(self, request, *args, **kwargs):
         centre = self.request.GET.get('centre', None)
         if centre in ['ied', 'fp']:
-            wish = self.request.user.individu.wishes.get(pk=self.kwargs['pk'])
+            wish = self.wish
             wish.centre_gestion = CentreGestionModel.objects.get(centre_gestion=centre)
             try:
                 if centre == 'fp':

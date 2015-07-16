@@ -7,7 +7,6 @@ from duck_inscription_payzen.utils import paiement_verif_etape_and_login
 __author__ = 'paulguichon'
 
 urlpatterns = [
-
     url(r'^dispatch/(?P<pk>\d+)/$', wish_verif_etape_and_login(views.DispatchView.as_view()),
         name="dispatch"),
     url(r'^choix_ied_fp/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.ChoixIedFpView.as_view()),
@@ -19,6 +18,4 @@ urlpatterns = [
     url(r'^paiement/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.PaiementView.as_view()), name='paiement'),
     url(r'^error/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.PaiementFailureView.as_view()), name='error'),
     url(r'^faillure/(?P<pk>\d+)/$', paiement_verif_etape_and_login(views.PaiementFailureView.as_view()), name='failure'),
-
-
 ]
