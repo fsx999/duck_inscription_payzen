@@ -76,7 +76,6 @@ class PaiementStateLog(xwf_models.BaseTransitionLog):
 
 class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
     state = xwf_models.StateField(PaiementState)
-    moment_paiement = [u"Au moment de l'inscription", u'01/01/15', u'15/02/15']
     wish = models.OneToOneField(Wish)
     moyen_paiement = models.ForeignKey(MoyenPaiementModel, verbose_name=u'Votre moyen de paiement :',
                                        help_text=u"Veuillez choisir un moyen de paiement", null=True)
