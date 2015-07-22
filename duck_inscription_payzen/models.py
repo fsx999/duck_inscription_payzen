@@ -241,6 +241,8 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
 
     def get_templates(self):
         template = []
+        if self.wish.centre_gestion.centre_gestion == 'fp':
+            return template
         if self.moyen_paiement.type == 'CB':
             template.extend([{'name': 'duck_inscription_payzen/formulaire_paiement_cb.html'}])
         else:
