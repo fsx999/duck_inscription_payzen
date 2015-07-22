@@ -248,7 +248,6 @@ class PaiementAllModel(xwf_models.WorkflowEnabled, models.Model):
         else:
             template.extend([{'name': "duck_inscription_payzen/formulaire_paiement_droit.html"},
          {'name': "duck_inscription_payzen/formulaire_paiement_frais.html"}])
-            pass
         if self.moyen_paiement.type == 'V':
             template.extend([ {'name': 'duck_inscription_payzen/ordre_virement.html'}])
         return template
