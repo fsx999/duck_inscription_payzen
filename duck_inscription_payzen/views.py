@@ -1,7 +1,7 @@
 # coding=utf-8
 from __future__ import unicode_literals
+from datetime import datetime
 from django.core.urlresolvers import reverse, NoReverseMatch
-__author__ = 'paulguichon'
 from django.conf import settings
 from django.views import generic
 from django.shortcuts import redirect
@@ -14,9 +14,17 @@ from duck_inscription_payzen.forms import ChoixPaiementDroitForm, DemiAnneeForm,
     ValidationPaiementForm
 
 
-class DispatchView(generic.View, WishIndividuMixin):
+class DispatchView(generic.TemplateView, WishIndividuMixin):
+    template_name = 'duck_inscription_payzen/pause.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DispatchView, self).get_context_data(**kwargs)
+        context['wish'] = self.wish
+        return context
 
     def get(self, request, *args, **kwargs):
+        if self.wish.annee.debut_pause and self.wish.annee.fin_pause and self.wish.annee.debut_pause <= datetime.now() <= self.wish.annee.fin_pause:
+            return super(DispatchView, self).get(request, *args, **kwargs)
         try:
             return redirect(self.wish.paiementallmodel.get_absolute_url())
         except NoReverseMatch:
