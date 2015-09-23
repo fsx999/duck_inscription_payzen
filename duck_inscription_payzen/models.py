@@ -1,5 +1,7 @@
 # coding=utf-8
 from __future__ import unicode_literals
+import hashlib
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django_payzen.models import PaymentRequest, ThemeConfig, MultiPaymentConfig, CustomPaymentConfig, PaymentResponse, \
     RequestDetails, CustomerDetails, ShippingDetails, OrderDetails, auth_user_model
@@ -8,7 +10,11 @@ from django_payzen import constants, app_settings, tools
 from django_xworkflows import models as xwf_models
 from xworkflows import  before_transition, on_enter_state
 import datetime
-
+from suds.client import Client
+from suds.sax.element import Element
+import uuid
+import hmac
+import base64
 from django.utils.timezone import utc
 import xworkflows
 
@@ -370,3 +376,23 @@ class DuckInscriptionPaymentRequest(RequestDetails, CustomerDetails,
         self.vads_cust_id = wish.individu.code_opi
         self.save()
 
+    def status_paiement(self):
+        certif = settings.VADS_CERTIFICATE
+        shopId =  Element('shopId').setText(settings.VADS_SITE_ID)
+        url = 'https://secure.payzen.eu/vads-ws/v5?wsdl'
+        date = datetime.datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        client = Client(url)
+        rid = str(uuid.uuid1())
+        requestId = Element('requestId').setText(rid)
+        timestamp = Element('timestamp').setText(date)
+        mode = Element('mode').setText(settings.VADS_CTX_MODE)
+        # mode = Element('mode').setText('PRODUCTION')
+        id = rid + date
+        token = hmac.new(bytes(certif).encode("utf-8"), bytes(id).encode("utf-8"), hashlib.sha256).digest()
+        token = base64.b64encode(token)
+        authToken = Element('authToken').setText(token)
+        client.set_options(soapheaders=(shopId, requestId, timestamp, mode, authToken))
+        p = client.factory.create('queryRequest')
+        p.orderId = self.vads_order_id
+        result = client.service.findPayments(p)
+        return result
