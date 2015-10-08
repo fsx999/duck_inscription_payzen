@@ -335,7 +335,6 @@ class DuckInscriptionPaymentRequest(RequestDetails, CustomerDetails,
     def payment_successful(self):
         return self.response and self.response.payment_successful
 
-
     def save(self, **kwargs):
         """
         We set up vads_trans_id and theme according to payzen format.
@@ -378,7 +377,7 @@ class DuckInscriptionPaymentRequest(RequestDetails, CustomerDetails,
 
     def status_paiement(self):
         certif = settings.VADS_CERTIFICATE
-        shopId =  Element('shopId').setText(settings.VADS_SITE_ID)
+        shopId = Element('shopId').setText(settings.VADS_SITE_ID)
         url = 'https://secure.payzen.eu/vads-ws/v5?wsdl'
         date = datetime.datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         client = Client(url)
