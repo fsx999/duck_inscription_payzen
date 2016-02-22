@@ -8,7 +8,7 @@ from django_payzen.models import PaymentRequest, ThemeConfig, MultiPaymentConfig
 from duck_inscription.models import Wish, CentreGestionModel
 from django_payzen import constants, app_settings, tools
 from django_xworkflows import models as xwf_models
-from xworkflows import  before_transition, on_enter_state
+from xworkflows import before_transition, on_enter_state
 import datetime
 from suds.client import Client
 from suds.sax.element import Element
@@ -375,23 +375,44 @@ class DuckInscriptionPaymentRequest(RequestDetails, CustomerDetails,
         self.vads_cust_id = wish.individu.code_opi
         self.save()
 
-    def status_paiement(self):
+    def _get_soap_headers(self):
         certif = settings.VADS_CERTIFICATE
-        shopId = Element('shopId').setText(settings.VADS_SITE_ID)
-        url = 'https://secure.payzen.eu/vads-ws/v5?wsdl'
         date = datetime.datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        client = Client(url)
         rid = str(uuid.uuid1())
-        requestId = Element('requestId').setText(rid)
+        id_ = rid + date
+        token = hmac.new(bytes(certif).encode("utf-8"), bytes(id_).encode("utf-8"), hashlib.sha256).digest()
+        token = base64.b64encode(token)
+
+        # Create Header of request
+        # Creates Element <shopId> id </shopId>
+        shopId = Element('shopId').setText(settings.VADS_SITE_ID)
         timestamp = Element('timestamp').setText(date)
+        requestId = Element('requestId').setText(rid)
         mode = Element('mode').setText(settings.VADS_CTX_MODE)
         # mode = Element('mode').setText('PRODUCTION')
-        id = rid + date
-        token = hmac.new(bytes(certif).encode("utf-8"), bytes(id).encode("utf-8"), hashlib.sha256).digest()
-        token = base64.b64encode(token)
         authToken = Element('authToken').setText(token)
-        client.set_options(soapheaders=(shopId, requestId, timestamp, mode, authToken))
+        return shopId, requestId, timestamp, mode, authToken
+
+    def status_paiement(self):
+        # Create request
+        url = 'https://secure.payzen.eu/vads-ws/v5?wsdl'
+        client = Client(url)
+        client.set_options(soapheaders=self._get_soap_headers())
+
+        # Create body of request
         p = client.factory.create('queryRequest')
         p.orderId = self.vads_order_id
         result = client.service.findPayments(p)
+        return result
+
+    def payment_details(self, uuid_):
+        # Create request
+        url = 'https://secure.payzen.eu/vads-ws/v5?wsdl'
+        client = Client(url)
+        client.set_options(soapheaders=self._get_soap_headers())
+
+        # Create body of request
+        p = client.factory.create('queryRequest')
+        p.uuid = uuid_
+        result = client.service.getPaymentDetails(p)
         return result
